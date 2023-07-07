@@ -27,7 +27,6 @@ export const Menu = () => {
       },
     }}
     variant="permanent"
-    anchor="right"
   >
     <Toolbar />
     <Divider />
