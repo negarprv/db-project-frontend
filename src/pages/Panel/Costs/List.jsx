@@ -27,13 +27,15 @@ const columns = [
     headerName: 'عملیات', 
     flex: 1,  
     sortable: false,
-    renderCell: () => {
+    renderCell: (params) => {
       return (
         <div className='actions'>
           <Tooltip title="ویرایش">
-            <IconButton>
-              <Edit />
-            </IconButton>
+            <Link to={`/panel/costs/${params.value}`}>
+              <IconButton>
+                <Edit />
+              </IconButton>
+            </Link>
           </Tooltip>
         </div>
       )
