@@ -1,23 +1,44 @@
 import AddIcon from '@mui/icons-material/Add'
 import { Button, Grid, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
-import { DataGrid } from '@mui/x-data-grid';
-import { useGetUsers } from '../../../queries/users';
-import { useEffect, useState } from 'react';
-import { getRoleName } from '../../../roles';
+import { DataGrid } from '@mui/x-data-grid'
+import { useGetCosts } from '../../../queries/costs'
+import { useEffect, useState } from 'react'
+import {Tooltip, IconButton} from '@mui/material'
+import { Edit } from '@mui/icons-material'
 
 const columns = [
-  { field: 'first_name', headerName: 'نام', width: 150 },
-  { field: 'last_name', headerName: 'نام خانوادگی', width: 150 },
-  { field: 'phone_number', headerName: 'شماره تماس', width: 150 },
+  { field: 'title', headerName: 'عنوان', width: 150 },
   { 
-    field: 'role', 
-    headerName: 'نقش', width: 150, 
-    valueGetter: (params) => getRoleName(params.value),
-    sortable: false
+    field: 'created_at',
+    valueFormatter: (params) => {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour:"numeric", minute: "numeric" };
+      return params.value.toLocaleString("fa-IR", options)
+    } ,
+    valueGetter: (params)=> {
+      return new Date(params.value)
+    },
+    headerName: 'تاریخ ثبت', 
+    width: 250, 
+    type: "dateTime" 
   },
-  { field: 'email', headerName: 'ایمیل', width: 250 },
-  { field: 'created_at', headerName: 'تاریخ ثبت نام', width: 250 },
+  { 
+    field: 'id', 
+    headerName: 'عملیات', 
+    flex: 1,  
+    sortable: false,
+    renderCell: () => {
+      return (
+        <div className='actions'>
+          <Tooltip title="ویرایش">
+            <IconButton>
+              <Edit />
+            </IconButton>
+          </Tooltip>
+        </div>
+      )
+    }
+  },
 ];
 
 const initialStateVal = {
@@ -27,10 +48,10 @@ const initialStateVal = {
   sort_order: "DESC"
 }
 
-export const UsersList = () => {
+export const CostList = () => {
 
   const [gridState, setGridState] = useState(initialStateVal)
-  const {data, isLoading, isFetching, refetch} = useGetUsers(gridState)
+  const {data, isLoading, isFetching, refetch} = useGetCosts(gridState)
 
   const setSorting = (sortingModel) => {
     if(sortingModel.length == 0){
@@ -67,11 +88,11 @@ export const UsersList = () => {
           <Grid container alignItems={"center"}>
             <Grid item flexGrow={1}>
               <Typography variant="h3" component="h3">
-                کاربران
+                هزینه‌ها
               </Typography>
             </Grid>
             <Grid item flexShrink={1}>
-              <Link to="/panel/users/add">
+              <Link to="/panel/costs/add">
               <Button variant="outlined" startIcon={<AddIcon />}>
                 اضافه نمودن
               </Button>
@@ -81,9 +102,8 @@ export const UsersList = () => {
         </header>
       </Grid>
       <Grid item xs={12}>
-        {data && <DataGrid 
+      {data && <DataGrid 
           loading={isLoading || isFetching}
-          getRowId={row => row.user_id}
           rows={data ? data.result : []}
           columns={columns}
           paginationModel={{

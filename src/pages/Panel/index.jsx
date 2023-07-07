@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import { MenuAppBar } from "./Header"
 import { Menu } from "./Menu"
 import { UsersPage } from "./Users"
+import { CostsPage } from './Costs'
 import { Grid } from "@mui/material"
 
 export const PanelPage = () => {
@@ -15,6 +16,7 @@ export const PanelPage = () => {
         <Grid item xs={10} flexGrow={1}>
           <Routes>
             <Route path={"users/*"} element={<UsersPage />} />
+            <Route path={"costs/*"} element={<CostsPage />} />
           </Routes>
         </Grid>
       </Grid>

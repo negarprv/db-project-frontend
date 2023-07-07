@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { PanelPage } from './pages/Panel'
+import { ToastContainer } from 'react-toastify'
 import axios from 'axios'
 //css
 import "./App.css";
@@ -25,13 +26,17 @@ const App = () => {
 
   return (
     <>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route element={<ProtectedRoute/>}>
-            <Route path='/panel/*' element={<PanelPage />} />
-          </Route>
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route element={<ProtectedRoute/>}>
+          <Route path='/panel/*' element={<PanelPage />} />
+        </Route>
+      </Routes>
+      <ToastContainer
+        position="bottom-left"
+      />
     </>
+
   );
 };
 

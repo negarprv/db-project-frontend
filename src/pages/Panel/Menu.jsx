@@ -48,10 +48,25 @@ export const Menu = () => {
               </ListItem>
             )}
           </NavLink>
-
       </List>
     </Authorize>
-
+    <Divider />
+    <Authorize roles={[roles.ADMIN, roles.PURCHASING]}>
+      <NavLink
+        to="/panel/costs"
+      >
+        {({isActive}) => (
+          <ListItem disablePadding>
+            <ListItemButton selected={isActive}>
+                  <ListItemIcon>
+                    <AccountCircle />
+                  </ListItemIcon>
+                  <ListItemText primary={"هزینه‌ها"} />
+                </ListItemButton>
+          </ListItem>
+        )}
+      </NavLink>
+    </Authorize>
     <Divider />
     <List>
       {['All mail', 'Trash', 'Spam'].map((text, index) => (
