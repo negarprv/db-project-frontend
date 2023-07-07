@@ -5,6 +5,9 @@ export const postCost = (cost) => {
   return axios.post(BASE_URL, cost)
 }
 
+export const getSingleCost = async (id) => {
+  return (await axios.get(BASE_URL + `/${id}`))
+}
 
 export const getCosts = async ({
   per_page,
