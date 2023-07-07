@@ -1,36 +1,36 @@
-import { Route, Routes, Navigate } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import { useEffect, useState } from "react";
-
+import { Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from './components/ProtectedRoute'
+import { PanelPage } from './pages/Panel'
+import axios from 'axios'
 //css
 import "./App.css";
 
-//service
-import authServices from "./redux/api/auth-service";
 
 //components
 import Login from "./pages/Login";
+import { useAuth } from "./hooks/useAuth";
+import { useEffect } from "react";
 
 const App = () => {
-  const [curUser, setCurUser] = useState(undefined);
-
+  const { stateVal, dispatchGetUserData } = useAuth()
+  
+  axios.defaults.withCredentials = true
   useEffect(() => {
-    const user = authServices.getCurUser();
-    console.log(user);
-    if (user) {
-      setCurUser(user);
-    }
-  }, []);
+    dispatchGetUserData()
+  }, [])
+  
+  if(stateVal.initial_load){
+    return null
+  }
 
   return (
     <>
-      <Provider store={store}>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Login />} />
+          <Route element={<ProtectedRoute/>}>
+            <Route path='/panel/*' element={<PanelPage />} />
+          </Route>
         </Routes>
-      </Provider>
     </>
   );
 };
