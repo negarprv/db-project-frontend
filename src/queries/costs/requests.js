@@ -5,8 +5,18 @@ export const postCost = (cost) => {
   return axios.post(BASE_URL, cost)
 }
 
+export const putCost = (cost) => {
+  return axios.put(BASE_URL + `/${cost.id}`, {
+    title: cost.title
+  })
+}
+
+export const deleteCost = async (id) => {
+  return (await axios.delete(BASE_URL + `/${id}`)).data
+}
+
 export const getSingleCost = async (id) => {
-  return (await axios.get(BASE_URL + `/${id}`))
+  return (await axios.get(BASE_URL + `/${id}`)).data
 }
 
 export const getCosts = async ({
