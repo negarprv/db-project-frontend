@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 
 export const EditCostPage = () => {
-  let { costID } = useParams();
+  let { costID } = useParams()
 
   const { mutate } = useUpdateCost()
   const {

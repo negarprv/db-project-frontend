@@ -2,14 +2,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetCosts } from "../../../queries/costs";
+import { useGetCostsAmount } from "../../../../queries/amount";
 import { useEffect, useState } from "react";
 import { Tooltip, IconButton } from "@mui/material";
-import { Edit, Article } from "@mui/icons-material";
-import Delete from "./delete";
+import { useParams } from "react-router-dom";
+import { Edit } from "@mui/icons-material";
+import Delete from "../delete";
 
 const columns = [
-  { field: "title", headerName: "عنوان", width: 150 },
+  { field: "unit_price", headerName: "مقدار", width: 150 },
   {
     field: "created_at",
     valueFormatter: (params) => {
@@ -38,15 +39,9 @@ const columns = [
       return (
         <div className="actions">
           <Delete id={params.value} />
-          <Tooltip title="مقدار هزینه ها">
-            <Link to={`/panel/costs/amount/${params.value}`}>
-              <IconButton>
-                <Article fontSize="medium" />
-              </IconButton>
-            </Link>
-          </Tooltip>
+
           <Tooltip title="ویرایش">
-            <Link to={`/panel/costs/${params.value}`}>
+            <Link to={`/panel/costs/amount/edit/${params.value}`}>
               <IconButton>
                 <Edit />
               </IconButton>
@@ -65,9 +60,13 @@ const initialStateVal = {
   sort_order: "DESC",
 };
 
-export const CostList = () => {
+export const CostAmountList = () => {
+  const { costID } = useParams();
   const [gridState, setGridState] = useState(initialStateVal);
-  const { data, isLoading, isFetching, refetch } = useGetCosts(gridState);
+  const { data, isLoading, isFetching, refetch } = useGetCostsAmount(
+    costID,
+    gridState
+  );
 
   const setSorting = (sortingModel) => {
     if (sortingModel.length == 0) {
@@ -103,11 +102,11 @@ export const CostList = () => {
           <Grid container alignItems={"center"}>
             <Grid item flexGrow={1}>
               <Typography variant="h3" component="h3">
-                لیست هزینه ها
+                لیست مقدار روزانه هزینه ها
               </Typography>
             </Grid>
             <Grid item flexShrink={1}>
-              <Link to="/panel/costs/add">
+              <Link to={`/panel/costs/amount/add/${costID}`}>
                 <Button variant="outlined" startIcon={<AddIcon />}>
                   اضافه نمودن
                 </Button>

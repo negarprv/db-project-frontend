@@ -14,10 +14,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-
-  const { dispatchLogin, stateVal } = useAuth()
-
-
+  const { dispatchLogin, stateVal } = useAuth();
 
   const {
     register,
@@ -28,11 +25,11 @@ const Login = () => {
   const submitHandler = async (data) => {
     // transform identifier string to lowercase to avoid case sensitivity issues in login
     data.identifier = data.identifier.toLowerCase();
-    dispatchLogin(data)
+    dispatchLogin(data);
   };
 
-  if(stateVal.authenticated){
-    return <Navigate to="/panel" />
+  if (stateVal.authenticated) {
+    return <Navigate to="/panel" />;
   }
 
   return (
@@ -56,7 +53,7 @@ const Login = () => {
                 autoFocus
                 autoComplete="identifier"
                 {...register("identifier", {
-                  required: "This field is required!",
+                  required: "این فیلد الزامی است",
                 })}
                 error={!!errors?.identifier}
                 helperText={
@@ -71,7 +68,7 @@ const Login = () => {
                 fullWidth
                 autoComplete="password"
                 {...register("password", {
-                  required: "This field is required!",
+                  required: "این فیلد الزامی است",
                 })}
                 type="password"
                 error={!!errors?.password}
