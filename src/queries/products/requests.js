@@ -4,3 +4,18 @@ import axios from 'axios'
 export const postProduct = (product) => {
   return axios.post(BASE_URL, product)
 }
+
+
+export const getProducts = async ({
+  per_page,
+  page,
+  sort_order,
+  sort_by
+} = {
+  per_page: 20,
+  page: 1,
+  sort_order: "DESC",
+  sort_by: "created_at"
+}) => {
+  return (await axios.get(BASE_URL + `?per_page=${per_page}&page=${page}&sort_order=${sort_order}&sort_by=${sort_by}`)).data
+}
