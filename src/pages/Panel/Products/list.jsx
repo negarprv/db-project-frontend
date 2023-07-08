@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useGetProducts } from "../../../queries/products";
-// import { Tooltip, IconButton } from "@mui/material";
-// import { Edit, Article } from "@mui/icons-material";
+import { Tooltip, IconButton } from "@mui/material";
+import { Edit } from "@mui/icons-material";
 // import Delete from "./delete";
 
 const columns = [
@@ -28,7 +28,26 @@ const columns = [
     headerName: "تاریخ ثبت",
     width: 250,
     type: "dateTime",
-  }
+  },
+  {
+    field: "product_code",
+    headerName: "عملیات",
+    flex: 1,
+    sortable: false,
+    renderCell: (params) => {
+      return (
+        <div className="actions">
+          <Tooltip title="ویرایش">
+            <Link to={`/panel/products/${params.value}`}>
+              <IconButton>
+                <Edit />
+              </IconButton>
+            </Link>
+          </Tooltip>
+        </div>
+      );
+    },
+  },
 ];
 
 const initialStateVal = {

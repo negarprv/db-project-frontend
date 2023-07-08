@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "react-query"
-import { getProducts, getSingleProduct, postProduct } from "./requests"
+import { getProducts, getSingleProduct, postProduct, putProduct } from "./requests"
 
 export const useAddNewProduct = () => {
   return useMutation(postProduct)
@@ -13,6 +13,10 @@ export const useGetSingleProduct = (id, options = {}) => {
     },
     options
   )
+}
+
+export const useUpdateProduct = () => {
+  return useMutation(putProduct)
 }
 
 export const useGetProducts = (queryObject) => {

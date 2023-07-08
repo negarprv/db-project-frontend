@@ -5,6 +5,11 @@ export const postProduct = (product) => {
   return axios.post(BASE_URL, product)
 }
 
+export const putProduct = (product) => {
+  return axios.put(BASE_URL + `/${product.id}`, {
+    title: product.title
+  })
+}
 
 export const getSingleProduct = async (id) => {
   return (await axios.get(BASE_URL + `/${id}`)).data
