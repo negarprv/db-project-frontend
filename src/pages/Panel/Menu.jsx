@@ -6,10 +6,8 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
 import Authorize from '../../components/Authorize'
-import { AccountCircle } from '@mui/icons-material'
+import { AccountCircle, Money } from '@mui/icons-material'
 import roles from '../../roles'
 import { NavLink } from 'react-router-dom'
 
@@ -59,7 +57,7 @@ export const Menu = () => {
           <ListItem disablePadding>
             <ListItemButton selected={isActive}>
                   <ListItemIcon>
-                    <AccountCircle />
+                    <Money />
                   </ListItemIcon>
                   <ListItemText primary={"هزینه‌ها"} />
                 </ListItemButton>
@@ -67,19 +65,23 @@ export const Menu = () => {
         )}
       </NavLink>
     </Authorize>
+    <Authorize roles={[roles.ADMIN, roles.SALES]}>
+      <NavLink
+        to="/panel/products"
+      >
+        {({isActive}) => (
+          <ListItem disablePadding>
+            <ListItemButton selected={isActive}>
+              <ListItemIcon>
+                <Money />
+              </ListItemIcon>
+              <ListItemText primary={"محصولات"} />
+            </ListItemButton>
+          </ListItem>
+        )}
+      </NavLink>
+    </Authorize>
     <Divider />
-    <List>
-      {['All mail', 'Trash', 'Spam'].map((text, index) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
   </Drawer>
   )
 }

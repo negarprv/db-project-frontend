@@ -6,5 +6,5 @@ export default {
 
 export const getRoleName = (roleCode) => {
   const roles = ["ادمین", "مسئول فروش", "مسئول خرید"]
-  return roles[roleCode]
+  return roles[roleCode - 1]
 }

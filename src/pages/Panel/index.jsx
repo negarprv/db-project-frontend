@@ -3,6 +3,7 @@ import { MenuAppBar } from "./Header"
 import { Menu } from "./Menu"
 import { UsersPage } from "./Users"
 import { CostsPage } from './Costs'
+import { ProductsPage } from './Products'
 import { Grid } from "@mui/material"
 
 export const PanelPage = () => {
@@ -17,6 +18,7 @@ export const PanelPage = () => {
           <Routes>
             <Route path={"users/*"} element={<UsersPage />} />
             <Route path={"costs/*"} element={<CostsPage />} />
+            <Route path={"products/*"} element={<ProductsPage />} />
           </Routes>
         </Grid>
       </Grid>

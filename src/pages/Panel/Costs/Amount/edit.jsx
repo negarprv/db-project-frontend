@@ -1,8 +1,9 @@
 import { Button, Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { Typography, LinearProgress } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
+import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 import {
   useGetSingleCostAmount,
@@ -10,8 +11,7 @@ import {
 } from "../../../../queries/amount";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 
 export const EditCostAmount = () => {
   let { costID } = useParams();
@@ -29,12 +29,13 @@ export const EditCostAmount = () => {
     },
   });
   const { isFetching } = useGetSingleCostAmount(parseInt(costID), {
-    onSuccess: (res) =>
+    onSuccess: (res) => {
       reset({
-        created_at: dayjs(res.created_at),
-        unit_price: res.unit_price.replace("$", ""),
-      }),
-    refetchOnWindowFocus: false,
+          created_at: new Date(res.created_at),
+          unit_price: res.unit_price.replace("$", ""),
+      })
+    },
+    refetchOnWindowFocus: false 
   });
 
   if (isFetching) {
@@ -98,22 +99,13 @@ export const EditCostAmount = () => {
                 name="created_at"
                 control={control}
                 rules={{ required: "این فیلد الزامی است" }}
-                render={({ field, fieldState }) => (
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="تاریخ"
+                render={({ field }) => (
+                  <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
+                    <MobileDateTimePicker 
+                      label="زمان" 
+                      defaultValue={new Date(2022, 1, 1)}
                       onChange={field.onChange}
                       value={field.value}
-                      slotProps={{
-                        textField: {
-                          variant: "outlined",
-                          fullWidth: true,
-                          helperText: fieldState.error
-                            ? fieldState.error.message
-                            : "",
-                          error: fieldState.invalid,
-                        },
-                      }}
                     />
                   </LocalizationProvider>
                 )}

@@ -59,6 +59,7 @@ export const AddNewCostAmount = () => {
                     fullWidth
                     label="مقدار هزینه"
                     variant="outlined"
+                    type="number"
                     helperText={
                       fieldState.error ? fieldState.error.message : ""
                     }
