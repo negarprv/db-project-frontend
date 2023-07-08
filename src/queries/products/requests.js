@@ -6,6 +6,10 @@ export const postProduct = (product) => {
 }
 
 
+export const getSingleProduct = async (id) => {
+  return (await axios.get(BASE_URL + `/${id}`)).data
+}
+
 export const getProducts = async ({
   per_page,
   page,
