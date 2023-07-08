@@ -8,6 +8,17 @@ export const postCostAmount = (costAmount) => {
   });
 };
 
+export const getSingleCostAmount = async (id) => {
+  return (await axios.get("http://localhost:4000/amount" + `/${id}`)).data;
+};
+
+export const putCostAmount = (cost) => {
+  return axios.put(BASE_URL + `/${cost.id}`, {
+    created_at: cost.created_at,
+    unit_price: cost.unit_price,
+  });
+};
+
 export const getCostsAmount = async (
   id,
   { per_page, page, sort_order, sort_by } = {

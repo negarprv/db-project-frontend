@@ -2,14 +2,21 @@ import { Button, Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { Typography, LinearProgress } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useUpdateCost, useGetSingleCost } from "../../../../queries/costs";
+import dayjs from "dayjs";
+
+import {
+  useGetSingleCostAmount,
+  useUpdateCostAmount,
+} from "../../../../queries/amount";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const EditCostAmount = () => {
   let { costID } = useParams();
 
-  const { mutate } = useUpdateCost();
+  const { mutate } = useUpdateCostAmount();
   const {
     handleSubmit,
     control,
@@ -21,11 +28,11 @@ export const EditCostAmount = () => {
       unit_price: "",
     },
   });
-  const { isFetching } = useGetSingleCost(parseInt(costID), {
+  const { isFetching } = useGetSingleCostAmount(parseInt(costID), {
     onSuccess: (res) =>
       reset({
-        created_at: res.created_at,
-        unit_price: res.unit_price,
+        created_at: dayjs(res.created_at),
+        unit_price: res.unit_price.replace("$", ""),
       }),
     refetchOnWindowFocus: false,
   });
@@ -34,7 +41,7 @@ export const EditCostAmount = () => {
     return <LinearProgress />;
   }
 
-  const onSubmit = (data) =>
+  const onSubmit = (data) => {
     mutate(
       {
         ...data,
@@ -49,7 +56,7 @@ export const EditCostAmount = () => {
         },
       }
     );
-
+  };
   return (
     <Grid container spacing={5}>
       <Grid item xs={12}>
@@ -76,6 +83,7 @@ export const EditCostAmount = () => {
                     fullWidth
                     label="مقدار هزینه"
                     variant="outlined"
+                    type="number"
                     helperText={
                       fieldState.error ? fieldState.error.message : ""
                     }
@@ -91,20 +99,23 @@ export const EditCostAmount = () => {
                 control={control}
                 rules={{ required: "این فیلد الزامی است" }}
                 render={({ field, fieldState }) => (
-                  <DatePicker
-                    label="تاریخ"
-                    slotProps={{
-                      textField: {
-                        variant: "outlined",
-                        size: "small",
-                        helperText: fieldState.error
-                          ? fieldState.error.message
-                          : "",
-                        error: fieldState.invalid,
-                        ...field,
-                      },
-                    }}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="تاریخ"
+                      onChange={field.onChange}
+                      value={field.value}
+                      slotProps={{
+                        textField: {
+                          variant: "outlined",
+                          fullWidth: true,
+                          helperText: fieldState.error
+                            ? fieldState.error.message
+                            : "",
+                          error: fieldState.invalid,
+                        },
+                      }}
+                    />
+                  </LocalizationProvider>
                 )}
               />
             </Grid>
