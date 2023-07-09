@@ -2,11 +2,11 @@
 import { DialogTitle, Dialog, Autocomplete, TextField, CircularProgress, Button, Grid } from '@mui/material';
 import { Fragment, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useSearchCosts } from '../../../queries/costs';
 import { useState } from 'react';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { useAddNewProductCost } from '../../../queries/products';
+import { useAddNewProductCost, useGetProductCosts } from '../../../queries/products';
 import { toast } from 'react-toastify';
+import { useSearchCosts } from '../../../queries/costs';
 
 export const AddProductCost = ({open, handleClose, productID}) => {
   const [searchTerm, setSearchTerm] = useState("")
@@ -15,8 +15,8 @@ export const AddProductCost = ({open, handleClose, productID}) => {
   const [results, setresults] = useState([])
 
   const { mutate }  = useAddNewProductCost()
-
-
+  const { data } = useGetProductCosts(productID)
+  console.log(data)
   const { isFetching, refetch } = useSearchCosts(debouncedValue, {
     enabled: false,
     onSuccess: (res) => setresults(res)

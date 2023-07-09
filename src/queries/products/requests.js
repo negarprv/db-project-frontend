@@ -32,3 +32,8 @@ export const getProducts = async ({
 }) => {
   return (await axios.get(BASE_URL + `?per_page=${per_page}&page=${page}&sort_order=${sort_order}&sort_by=${sort_by}`)).data
 }
+
+
+export const getProductCosts = async (id) => {
+  return (await axios.get(BASE_URL + `/costs/${id}`)).data
+}
