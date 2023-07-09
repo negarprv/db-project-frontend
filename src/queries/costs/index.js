@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "react-query"
-import { postCost, getCosts, getSingleCost, putCost, deleteCost } from "./requests"
+import { postCost, getCosts, getSingleCost, putCost, deleteCost, searchCost } from "./requests"
 
 export const useAddNewCost = () => {
   return useMutation(postCost)
@@ -26,5 +26,11 @@ export const useGetSingleCost = (id, options = {}) => {
 export const useGetCosts = (queryObject) => {
   return useQuery('costs/getAll', () => {
     return getCosts(queryObject)
+  })
+}
+
+export const useSearchCosts = (term) => {
+  return useQuery(['costs/search', term], () => {
+    return searchCost(term)
   })
 }
