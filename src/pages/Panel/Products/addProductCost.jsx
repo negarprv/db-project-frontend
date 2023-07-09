@@ -5,13 +5,16 @@ import { useForm, Controller } from 'react-hook-form';
 import { useSearchCosts } from '../../../queries/costs';
 import { useState } from 'react';
 import { useDebounce } from '../../../hooks/useDebounce';
+import { useAddNewProductCost } from '../../../queries/products';
+import { toast } from 'react-toastify';
 
-export const AddProductCost = ({open, handleClose}) => {
+export const AddProductCost = ({open, handleClose, productID}) => {
   const [searchTerm, setSearchTerm] = useState("")
   const [slectOpen, setSelectOpen] = useState(false)
   const debouncedValue = useDebounce(searchTerm, 500)
   const [results, setresults] = useState([])
 
+  const { mutate }  = useAddNewProductCost()
 
 
   const { isFetching, refetch } = useSearchCosts(debouncedValue, {
@@ -37,7 +40,17 @@ export const AddProductCost = ({open, handleClose}) => {
     }
   })
 
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => mutate({
+    quantity: data.quantity,
+    cost_id: data.cost_type.id,
+    product_id: parseInt(productID)
+  },
+  {
+    onSuccess: () => {
+      toast.success("هزینه با موفقیت اضافه شد")
+      handleClose()
+    }
+  })
 
     return (
       <Dialog 
@@ -60,7 +73,7 @@ export const AddProductCost = ({open, handleClose}) => {
                 name="cost_type"
                 control={control}
                 rules={{ required: "این فیلد الزامی است" }}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <Autocomplete
                     getOptionLabel={(option) => option.title}
                     onChange={(evt, newVal) => field.onChange(newVal)}

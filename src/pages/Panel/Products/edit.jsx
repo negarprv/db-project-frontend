@@ -118,6 +118,7 @@ export const EditProductPage = () => {
       <AddProductCost
         open={dialogOpen}
         handleClose={() => setDialogOpen(false)}
+        productID={productID}
       />
     </Grid>
   )
