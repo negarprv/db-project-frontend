@@ -1,13 +1,17 @@
 import { Button, Grid, TextField } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { Typography, LinearProgress } from "@mui/material"
+import { Add } from "@mui/icons-material"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { useGetSingleProduct, useUpdateProduct } from "../../../queries/products"
+import { useState } from "react"
+import { AddProductCost } from "./addProductCost"
 
 export const EditProductPage = () => {
-  let { productID } = useParams()
-
+  const { productID } = useParams()
+  const [dialogOpen, setDialogOpen] = useState(false)
+  
   const { mutate } = useUpdateProduct()
   const {
     handleSubmit,
@@ -80,7 +84,6 @@ export const EditProductPage = () => {
                   />
                 )}
               />
-
             </Grid>
             <Grid item xs={12}>
               <Button 
@@ -96,6 +99,26 @@ export const EditProductPage = () => {
           </Grid>
         </form>
       </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h4" component="h3">
+          هزینه‌های محصول
+        </Typography>
+        <Grid container spacing={1}>
+          <Grid item xs={12} style={{textAlign: "center"}} justifyContent={"center"}>
+            <Button 
+              aria-label="add" 
+              variant="contained"
+              onClick={() => setDialogOpen(true)}
+            >
+              <Add />
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+      <AddProductCost
+        open={dialogOpen}
+        handleClose={() => setDialogOpen(false)}
+      />
     </Grid>
   )
 }

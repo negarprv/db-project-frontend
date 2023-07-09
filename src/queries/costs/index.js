@@ -29,8 +29,8 @@ export const useGetCosts = (queryObject) => {
   })
 }
 
-export const useSearchCosts = (term) => {
+export const useSearchCosts = (term, options={}) => {
   return useQuery(['costs/search', term], () => {
     return searchCost(term)
-  })
+  }, options)
 }
